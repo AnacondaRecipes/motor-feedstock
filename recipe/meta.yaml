@@ -1,6 +1,6 @@
 {% set name = "motor" %}
-{% set version = "3.1.1" %}
-{% set sha256 = "a4bdadf8a08ebb186ba16e557ba432aa867f689a42b80f2e9f8b24bbb1604742" %}
+{% set version = "3.4.0" %}
+{% set sha256 = "c89b4e4eb2e711345e91c7c9b122cb68cce0e5e869ed0387dd0acb10775e3131" %}
 
 package:
   name: {{ name|lower }}
@@ -11,22 +11,20 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-build-isolation -vvv
+  skip: True # [py<37]
 
 requirements:
   host:
     - pip
-    - aiohttp
-    - tornado >=6.0
-    - pymongo >=4.1,<5
-    - python >=3.7
+    - python
+    - wheel
+    - setuptools
   run:
     - aiohttp
-    - tornado >=6.0
-    - pymongo >=4.1,<5
-    - python >=3.7
+    - tornado
+    - pymongo >=4.5,<5
+    - python
 
 test:
   imports:
@@ -35,6 +33,10 @@ test:
     - motor.frameworks
     - motor.frameworks.asyncio
     - motor.frameworks.tornado
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/mongodb/motor/
@@ -42,6 +44,10 @@ about:
   license_family: Apache
   license_file: LICENSE
   summary: Non-blocking MongoDB driver for Tornado or asyncio
+  description: |
+    Motor is a full-featured, non-blocking MongoDB driver for Python asyncio and 
+    Tornado applications. Motor presents a coroutine-based API for non-blocking 
+    access to MongoDB.
   doc_url: https://motor.readthedocs.io
   dev_url: https://github.com/mongodb/motor
 
