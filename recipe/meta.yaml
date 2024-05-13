@@ -23,6 +23,7 @@ requirements:
     - setuptools
   run:
     - aiohttp
+     # tornado is not mentioned in the requirements, but it's used as a framework in the source code
     - tornado
     - pymongo >=4.5,<5
     - python
